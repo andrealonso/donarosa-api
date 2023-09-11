@@ -61,23 +61,33 @@ class ClienteService {
 
             })
             if (!dados) return { erro: false, dados }
-            return dados
+            return { erro: false, dados }
         } catch (erro) {
             console.log(erro);
-            const { code } = erro
-            return { erro: true, codigo: code, msg: 'Erro ao tentar exibir o registro no banco.' }
+            return { erro: true, msg: 'Erro ao tentar exibir listagem no banco.' }
         }
     }
     async update(id, payload) {
-        if (payload?.dt_nasc) {
-            payload.dt_nasc = new Date(payload.dt_nasc + 'T00:00:00-03:00')
+        try {
+            if (payload?.dt_nasc) {
+                payload.dt_nasc = new Date(payload.dt_nasc + 'T00:00:00-03:00')
+            }
+            const dados = await prisma.cliente.update({ where: { id }, data: payload, select: { id: true } })
+            return { erro: false, dados }
+        } catch (erro) {
+            console.log(erro);
+            return { erro: true, msg: 'Erro ao tentar exibir listagem no banco.' }
         }
-        const dados = await prisma.cliente.update({ where: { id }, data: payload, select: { id: true } })
-        return dados
     }
     async delete(id) {
-        const dados = await prisma.cliente.update({ where: { id }, data: { deleted_at: new Date() }, select: { id: true } })
-        return dados
+        try {
+            const dados = await prisma.cliente.update({ where: { id }, data: { deleted_at: new Date() }, select: { id: true } })
+            return { erro: false, dados }
+        } catch (erro) {
+            console.log(erro);
+            return { erro: true, msg: 'Erro ao tentar exibir listagem no banco.' }
+        }
+
     }
 }
 
