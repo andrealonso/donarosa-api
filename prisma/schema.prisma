@@ -13,7 +13,6 @@ model User {
   senha         String
   user_nivel    User_Nivel? @relation(fields: [user_nivel_id], references: [id])
   user_nivel_id Int?
-  Pessoa        Pessoa[]
 
   @@map("usuarios")
 }
@@ -26,22 +25,23 @@ model User_Nivel {
   @@map("user_nivel")
 }
 
-model Pessoa {
+model Cliente {
   id              Int           @id @default(autoincrement())
   nome            String        @unique
-  identidade      String
+  identidade      String?
   cpf             String        @unique
-  dt_nasc         DateTime
-  tel             String
-  email           String
-  user            User?         @relation(fields: [user_id], references: [id])
-  user_id         Int?
-  tipo_desc       Pessoa_tipo?  @relation(fields: [tipo_id], references: [id])
-  tipo_id         Int?
-  sexo_desc       Sexo?         @relation(fields: [sexo_id], references: [id])
+  dt_nasc         DateTime?
+  tel             String?
+  email           String?
+  endereco        String?
+  bairro          String?
+  cep             String?
+  cidade          String?
+  uf              String?
+  complemento     String?
+  ponto_ref       String?
+  sexo            Sexo?         @relation(fields: [sexo_id], references: [id])
   sexo_id         Int?
-  enderecos       Enderecos?    @relation(fields: [enderecos_id], references: [id])
-  enderecos_id    Int?
   ativo_status    Ativo_status? @relation(fields: [ativo_status_id], references: [id])
   ativo_status_id Int?
 
@@ -49,75 +49,79 @@ model Pessoa {
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
 
-  @@map("pessoas")
+  @@map("clientes")
 }
 
-model Pessoa_tipo {
-  id        Int      @id @default(autoincrement())
-  descricao String   @unique
-  pessoas   Pessoa[]
-
-  @@map("pessoa_tipo")
-}
-
-model Ativo_status {
-  id        Int       @id @default(autoincrement())
-  descricao String    @unique
-  pessoas   Pessoa[]
-  produtos  Produto[]
-
-  @@map("pessoa_status")
-}
-
-model Sexo {
-  id        Int      @id @default(autoincrement())
-  descricao String
-  pessoas   Pessoa[]
-
-  @@map("sexo")
-}
-
-model Enderecos {
-  id          Int      @id @default(autoincrement())
-  endereco    String
-  bairro      String
-  complemento String
-  ponto_ref   String
-  cep         String
-  uf          String
-  pessoas     Pessoa[]
+model Funcionario {
+  id              Int           @id @default(autoincrement())
+  nome            String        @unique
+  identidade      String?
+  cpf             String        @unique
+  dt_nasc         DateTime?
+  tel             String?
+  email           String?
+  endereco        String?
+  bairro          String?
+  cep             String?
+  cidade          String?
+  uf              String?
+  complemento     String?
+  ponto_ref       String?
+  sexo            Sexo?         @relation(fields: [sexo_id], references: [id])
+  sexo_id         Int?
+  ativo_status    Ativo_status? @relation(fields: [ativo_status_id], references: [id])
+  ativo_status_id Int?
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
 
-  @@map("enderecos")
+  @@map("funcionarios")
+}
+
+model Ativo_status {
+  id          Int           @id @default(autoincrement())
+  descricao   String        @unique
+  clientes    Cliente[]
+  produtos    Produto[]
+  funcionario Funcionario[]
+
+  @@map("status_ativo")
+}
+
+model Sexo {
+  id           Int           @id @default(autoincrement())
+  descricao    String
+  clientes     Cliente[]
+  funcionarios Funcionario[]
+
+  @@map("sexo")
 }
 
 model Produto {
-  id                Int              @id @default(autoincrement())
-  descricao         String           @unique
-  cod_barras        String
-  vl_custo          Decimal
-  vl_venda          Decimal
-  vl_aluguel        Decimal
-  qtd_estoque       Int
-  prod_imagem       String
-  ativo_status      Ativo_status?    @relation(fields: [ativo_status_id], references: [id])
-  ativo_status_id   Int?
-  prod_tamanho      Prod_tamanho?    @relation(fields: [prod_tamanho_id], references: [id])
-  prod_tamanho_id   Int?
-  prod_compri       Prod_compri?     @relation(fields: [prod_compri_id], references: [id])
-  prod_compri_id    Int?
-  prod_cor          Prod_cor?        @relation(fields: [prod_cor_id], references: [id])
-  prod_cor_id       Int?
-  prod_fabrica      Prod_fabrica?    @relation(fields: [prod_fabrica_id], references: [id])
-  prod_fabrica_id   Int?
-  prod_categoria    Prod_categoria?  @relation(fields: [prod_categoria_id], references: [id])
-  prod_categoria_id Int?
-  estoque_lanc      Estoque_lanc?    @relation(fields: [estoque_lanc_id], references: [id])
-  estoque_lanc_id   Int?
-  contrato_itens    Contrato_itens[]
+  id                  Int              @id @default(autoincrement())
+  descricao           String           @unique
+  cod_barras          String
+  vl_custo            Decimal?
+  vl_venda            Decimal?
+  vl_aluguel          Decimal?
+  qtd_estoque         Int              @default(0)
+  prod_imagem         String?
+  ativo_status        Ativo_status?    @relation(fields: [ativo_status_id], references: [id])
+  ativo_status_id     Int?
+  prod_tamanho        Prod_tamanho?    @relation(fields: [prod_tamanho_id], references: [id])
+  prod_tamanho_id     Int?
+  prod_compri         Prod_compri?     @relation(fields: [prod_compri_id], references: [id])
+  prod_compri_id      Int?
+  prod_cor            Prod_cor?        @relation(fields: [prod_cor_id], references: [id])
+  prod_cor_id         Int?
+  prod_fabrica        Prod_fabrica?    @relation(fields: [prod_fabrica_id], references: [id])
+  prod_fabrica_id     Int?
+  prod_categoria      Prod_categoria?  @relation(fields: [prod_categoria_id], references: [id])
+  prod_categoria_id   Int?
+  contrato_itens      Contrato_itens[]
+  estoque_lancamentos Estoque_lanc[]
+  venda_itens         Venda_itens[]
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -171,11 +175,12 @@ model Estoque_lanc {
   descricao       String
   qtd             Int
   data            DateTime
-  produtos        Produto[]
   estoque_tipo    Estoque_tipo? @relation(fields: [estoque_tipo_id], references: [id])
   estoque_tipo_id Int?
   estoque_oper    Estoque_oper? @relation(fields: [estoque_oper_id], references: [id])
   estoque_oper_id Int?
+  produtos        Produto?      @relation(fields: [produto_id], references: [id])
+  produto_id      Int?
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -208,28 +213,27 @@ model Contrato {
   dt_devol           DateTime
   contrato_status    Contrato_status? @relation(fields: [contrato_status_id], references: [id])
   contrato_status_id Int?
-  contrato_itens     Contrato_itens?  @relation(fields: [contrato_itens_id], references: [id])
-  contrato_itens_id  Int?
-
-  created_at DateTime     @default(now())
-  updated_at DateTime     @updatedAt
-  deleted_at DateTime?
-  caixa_lanc Caixa_lanc[]
+  itens              Contrato_itens[]
+  created_at         DateTime         @default(now())
+  updated_at         DateTime         @updatedAt
+  deleted_at         DateTime?
+  caixa_lanc         Caixa_lanc[]
 
   @@map("contratos")
 }
 
 model Contrato_itens {
-  id         Int        @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   qtd        Int
   valor      Decimal
-  contratos  Contrato[]
-  produto    Produto?   @relation(fields: [produto_id], references: [id])
+  produto    Produto? @relation(fields: [produto_id], references: [id])
   produto_id Int?
 
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  contrato    Contrato? @relation(fields: [contrato_id], references: [id])
+  contrato_id Int?
 
   @@map("contrato_itens")
 }
@@ -248,6 +252,8 @@ model Caixa_lanc {
   valor     Decimal
   data      DateTime
 
+  caixa_operacao    Caixa_operacao? @relation(fields: [caixa_operacao_id], references: [id])
+  caixa_operacao_id Int?
   caixa_form_pag    Caixa_form_pag? @relation(fields: [caixa_form_pag_id], references: [id])
   caixa_form_pag_id Int?
   caixa_cate        Caixa_cate?     @relation(fields: [caixa_cate_id], references: [id])
@@ -269,11 +275,22 @@ model Caixa_form_pag {
 }
 
 model Caixa_cate {
-  id        Int          @id @default(autoincrement())
-  descricao String
-  caixa     Caixa_lanc[]
+  id                Int             @id @default(autoincrement())
+  descricao         String
+  caixa             Caixa_lanc[]
+  caixa_operacao    Caixa_operacao? @relation(fields: [caixa_operacao_id], references: [id])
+  caixa_operacao_id Int?
 
   @@map("caixa_cate")
+}
+
+model Caixa_operacao {
+  id              Int          @id @default(autoincrement())
+  descricao       String
+  caixa_lanc      Caixa_lanc[]
+  caixa_categoria Caixa_cate[]
+
+  @@map("caixa_operacao")
 }
 
 model Venda {
@@ -294,12 +311,14 @@ model Venda {
 }
 
 model Venda_itens {
-  id        Int     @id @default(autoincrement())
-  qtd       Int
-  vl_uni    Decimal
-  vl_total  Decimal
-  venda     Venda?  @relation(fields: [vendas_id], references: [id])
-  vendas_id Int?
+  id         Int      @id @default(autoincrement())
+  qtd        Int
+  vl_uni     Decimal
+  vl_total   Decimal
+  venda      Venda?   @relation(fields: [vendas_id], references: [id])
+  vendas_id  Int?
+  produto    Produto? @relation(fields: [produto_id], references: [id])
+  produto_id Int?
 
   @@map("venda_itens")
 }
@@ -324,3 +343,17 @@ model Evento_tipo {
 
   @@map("evento_tipo")
 }
+
+// {
+// "nome":""
+// "identidade":""
+// "cpf":""
+// "dt_nasc":""
+// "tel":""
+// "email":""
+// "user_id":""
+// "tipo_id":""
+// "sexo_id":""
+// "enderecos_id":""
+// "ativo_status_id":""
+// }

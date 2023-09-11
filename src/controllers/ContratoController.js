@@ -1,11 +1,10 @@
-const { connect } = require('../services/db')
 const { PrismaClient } = require('@prisma/client')
-const UserService = require('../repositories/UsuarioService')
+const ContratoService = require('../repositories/ContratoService')
 
-class UsuarioController {
+class ContratoController {
     async criar(req, res) {
         try {
-            const data = await UserService.create(req.body)
+            const data = await ContratoService.create(req.body)
             res.status(200).send(data)
         } catch (error) {
             console.log(error);
@@ -15,7 +14,7 @@ class UsuarioController {
 
     async listar(req, res) {
         try {
-            const data = await UserService.getAll()
+            const data = await ContratoService.getAll()
             res.status(200).send(data)
         } catch (error) {
             res.status(500).send(error)
@@ -24,7 +23,7 @@ class UsuarioController {
 
     async exibir(req, res) {
         try {
-            const data = await UserService.getById(Number(req?.params?.id))
+            const data = await ContratoService.getById(Number(req?.params?.id))
             res.status(200).send(data)
         } catch (error) {
             res.status(500).send(error)
@@ -36,7 +35,7 @@ class UsuarioController {
         try {
             const id = Number(req?.params?.id)
             const payload = req.body
-            const data = await UserService.update(id, payload)
+            const data = await ContratoService.update(id, payload)
             res.status(200).send(data)
         } catch (error) {
             console.log(error);
@@ -47,7 +46,7 @@ class UsuarioController {
     async deletar(req, res) {
         try {
             const id = Number(req?.params?.id)
-            const data = await UserService.delete(id)
+            const data = await ContratoService.delete(id)
             res.status(200).send(data)
         } catch (error) {
             res.status(400).send(error)
@@ -55,4 +54,4 @@ class UsuarioController {
     }
 }
 
-module.exports = new UsuarioController()
+module.exports = new ContratoController()

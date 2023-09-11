@@ -1,11 +1,21 @@
 const { connect } = require('../services/db')
-const { PrismaClient } = require('@prisma/client')
-const UserService = require('../repositories/UsuarioService')
+var prisma = require('../services/prisma')
+var ProdutoService = require("../repositories/ProdutoService")
 
-class UsuarioController {
+class ProdutoController {
     async criar(req, res) {
         try {
-            const data = await UserService.create(req.body)
+            console.log("aqui");
+            const data = await ProdutoService.create(req.body)
+            res.status(200).send(data)
+        } catch (error) {
+            console.log(error);
+            res.status(400).send(error)
+        }
+    }
+    async listar(req, res) {
+        try {
+            const data = await ProdutoService.getAll()
             res.status(200).send(data)
         } catch (error) {
             console.log(error);
@@ -13,21 +23,13 @@ class UsuarioController {
         }
     }
 
-    async listar(req, res) {
-        try {
-            const data = await UserService.getAll()
-            res.status(200).send(data)
-        } catch (error) {
-            res.status(500).send(error)
-        }
-    }
-
     async exibir(req, res) {
         try {
-            const data = await UserService.getById(Number(req?.params?.id))
+            const data = await ProdutoService.getById(Number(req?.params?.id))
             res.status(200).send(data)
         } catch (error) {
-            res.status(500).send(error)
+            console.log(error);
+            res.status(400).send(error)
         }
     }
 
@@ -36,7 +38,7 @@ class UsuarioController {
         try {
             const id = Number(req?.params?.id)
             const payload = req.body
-            const data = await UserService.update(id, payload)
+            const data = await ProdutoService.update(id, payload)
             res.status(200).send(data)
         } catch (error) {
             console.log(error);
@@ -47,7 +49,7 @@ class UsuarioController {
     async deletar(req, res) {
         try {
             const id = Number(req?.params?.id)
-            const data = await UserService.delete(id)
+            const data = await ProdutoService.delete(id)
             res.status(200).send(data)
         } catch (error) {
             res.status(400).send(error)
@@ -55,4 +57,4 @@ class UsuarioController {
     }
 }
 
-module.exports = new UsuarioController()
+module.exports = new ProdutoController()
