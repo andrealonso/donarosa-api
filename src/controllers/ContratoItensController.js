@@ -1,9 +1,9 @@
 const { PrismaClient } = require('@prisma/client')
-const ContratoService = require('../repositories/ContratoService')
+const ContratoItensService = require('../repositories/ContratoItensService')
 
-class ContratoController {
+class ContratoItensController {
     async criar(req, res) {
-        const dados = await ContratoService.create(req.body)
+        const dados = await ContratoItensService.create(req.body)
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -12,7 +12,7 @@ class ContratoController {
     }
 
     async listar(req, res) {
-        const dados = await ContratoService.getAll()
+        const dados = await ContratoItensService.getAll()
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -21,7 +21,7 @@ class ContratoController {
     }
 
     async exibir(req, res) {
-        const dados = await ContratoService.getById(Number(req?.params?.id))
+        const dados = await ContratoItensService.getById(Number(req?.params?.id))
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -32,7 +32,7 @@ class ContratoController {
     async editar(req, res) {
         const id = Number(req?.params?.id)
         const payload = req.body
-        const dados = await ContratoService.update(id, payload)
+        const dados = await ContratoItensService.update(id, payload)
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -42,7 +42,7 @@ class ContratoController {
 
     async deletar(req, res) {
         const id = Number(req?.params?.id)
-        const dados = await ContratoService.delete(id)
+        const dados = await ContratoItensService.delete(id)
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -51,4 +51,4 @@ class ContratoController {
     }
 }
 
-module.exports = new ContratoController()
+module.exports = new ContratoItensController()

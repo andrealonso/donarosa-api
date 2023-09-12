@@ -1,6 +1,6 @@
 var prisma = require('../services/prisma')
 var moment = require('moment')
-class ContratoService {
+class ContratoItensService {
     coverteDatas(payload) {
         if (payload.dt_prova) {
             payload.dt_prova = new Date(payload.dt_prova)
@@ -12,8 +12,8 @@ class ContratoService {
 
     async create(payload) {
         try {
-            this.coverteDatas(payload)
-            const dados = await prisma.contrato.create({ data: payload })
+            console.log(payload)
+            const dados = await prisma.contrato_itens.create({ data: payload })
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);
@@ -23,7 +23,7 @@ class ContratoService {
 
     async getAll() {
         try {
-            const dados = await prisma.contrato.findMany()
+            const dados = await prisma.contrato_itens.findMany()
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);
@@ -31,27 +31,23 @@ class ContratoService {
         }
 
     }
+
     async getById(id) {
         try {
             const selDescricao = { select: { descricao: true } }
-            const dados = await prisma.contrato.findUnique({
+            const dados = await prisma.contrato_itens.findUnique({
                 where: { id }
-
             })
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);
             return { erro: true, msg: 'Erro ao tentar criar o registro no banco.' }
         }
-
-
     }
+
     async update(id, payload) {
         try {
-            if (payload.senha) {
-                payload.senha = this.criptSenha(payload.senha)
-            }
-            const dados = await prisma.contrato.update({ where: { id }, data: payload })
+            const dados = await prisma.contrato_itens.update({ where: { id }, data: payload })
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);
@@ -59,16 +55,16 @@ class ContratoService {
         }
 
     }
+
     async delete(id) {
         try {
-            const dados = await prisma.contrato.delete({ where: { id } })
+            const dados = await prisma.contrato_itens.update({ where: { id }, data: { deleted_at: new Date() } })
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);
             return { erro: true, msg: 'Erro ao tentar criar o registro no banco.' }
         }
-
     }
 }
 
-module.exports = new ContratoService()
+module.exports = new ContratoItensService()

@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
 
-const ContratoController = require('../controllers/ContratoController')
+const ContratoItensController = require('../controllers/ContratoItensController')
 
 // Rotas de usuários
-router.get('/contratos', ContratoController.listar)
-router.get('/contrato/:id', ContratoController.exibir)
-router.post('/contrato', ContratoController.criar)
-router.put('/contrato/:id', ContratoController.editar)
-router.delete('/contrato/:id', ContratoController.deletar)
+router.get('/contrato-itens', ContratoItensController.listar)
+router.get('/contrato-item/:id', ContratoItensController.exibir)
+router.post('/contrato-item', ContratoItensController.criar)
+router.put('/contrato-item/:id', ContratoItensController.editar)
+router.delete('/contrato-item/:id', ContratoItensController.deletar)
 
 module.exports = router

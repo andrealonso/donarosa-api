@@ -226,17 +226,17 @@ model Contrato {
 }
 
 model Contrato_itens {
-  id         Int      @id @default(autoincrement())
-  qtd        Int
-  valor      Decimal
-  produto    Produto? @relation(fields: [produto_id], references: [id])
-  produto_id Int?
-
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
-  deleted_at  DateTime?
+  id          Int       @id @default(autoincrement())
+  qtd         Int
+  valor       Decimal
+  produto     Produto?  @relation(fields: [produto_id], references: [id])
+  produto_id  Int?
   contrato    Contrato? @relation(fields: [contrato_id], references: [id])
   contrato_id Int?
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 
   @@map("contrato_itens")
 }
@@ -348,15 +348,9 @@ model Evento_tipo {
 }
 
 // {
-// "nome":""
-// "identidade":""
-// "cpf":""
-// "dt_nasc":""
-// "tel":""
-// "email":""
-// "user_id":""
-// "tipo_id":""
-// "sexo_id":""
-// "enderecos_id":""
-// "ativo_status_id":""
-// }
+//   "id":null
+//   "qtd":null
+//   "valor":null
+//   "produto":null
+//   "produto_id":null
+//   }
