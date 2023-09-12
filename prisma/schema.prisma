@@ -44,6 +44,7 @@ model Cliente {
   sexo_id         Int?
   ativo_status    Ativo_status? @relation(fields: [ativo_status_id], references: [id])
   ativo_status_id Int?
+  contratos       Contrato[]
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -218,6 +219,8 @@ model Contrato {
   updated_at         DateTime         @updatedAt
   deleted_at         DateTime?
   caixa_lanc         Caixa_lanc[]
+  cliente            Cliente?         @relation(fields: [cliente_id], references: [id])
+  cliente_id         Int?
 
   @@map("contratos")
 }

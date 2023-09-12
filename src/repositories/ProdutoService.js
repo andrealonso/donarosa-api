@@ -82,7 +82,7 @@ class ProdutoService {
     }
     async delete(id) {
         try {
-            const dados = await prisma.produto.delete({ where: { id }, select: { id: true } })
+            const dados = await prisma.produto.update({ where: { id }, data: { deleted_at: new Date() }, select: { id: true } })
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);
