@@ -15,7 +15,7 @@ class ClienteService {
     async create(payload) {
         try {
             if (payload.dt_nasc) {
-                payload.dt_nasc = new Date(payload.dt_nasc + '00:00:00')
+                payload.dt_nasc = new Date(payload.dt_nasc)
             }
             const dados = await prisma.cliente.create({
                 data: payload,
@@ -23,8 +23,13 @@ class ClienteService {
             })
             return { erro: false, dados }
         } catch (erro) {
+            let msg = 'Erro ao tentar criar o registro no banco.'
+            if (erro.meta?.target) {
+                const { target } = erro.meta
+                if (target === 'clientes_cpf_key' || target === 'clientes_nome_key') msg = 'Nome ou CPF já cadastrado.'
+            }
             console.log(erro);
-            return { erro: true, msg: 'Erro ao tentar criar o registro no banco.' }
+            return { erro: true, msg }
         }
     }
 
@@ -57,10 +62,9 @@ class ClienteService {
         try {
             const dados = await prisma.cliente.findUnique({
                 where: { id },
-
-
             })
-            if (!dados) return { erro: false, dados }
+            if (dados.dt_nasc)
+                dados.dt_nasc = moment.utc(dados.dt_nasc).format('YYYY-MM-DD');
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);
@@ -70,7 +74,7 @@ class ClienteService {
     async update(id, payload) {
         try {
             if (payload?.dt_nasc) {
-                payload.dt_nasc = new Date(payload.dt_nasc + 'T00:00:00-03:00')
+                payload.dt_nasc = new Date(payload.dt_nasc)
             }
             const dados = await prisma.cliente.update({ where: { id }, data: payload, select: { id: true } })
             return { erro: false, dados }

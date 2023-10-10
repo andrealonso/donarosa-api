@@ -2,6 +2,8 @@ var prisma = require('../services/prisma')
 class ProdutoService {
     async create(payload) {
         try {
+            if (payload.qtd_estoque) payload.qtd_estoque = parseFloat(payload.qtd_estoque)
+
             const dados = await prisma.produto.create({ data: payload, select: { id: true } })
             return { erro: false, dados }
         } catch (erro) {
@@ -73,6 +75,7 @@ class ProdutoService {
 
     async update(id, payload) {
         try {
+            if (payload.qtd_estoque) payload.qtd_estoque = parseFloat(payload.qtd_estoque)
             const dados = await prisma.produto.update({ where: { id }, data: payload, select: { id: true } })
             return { erro: false, dados }
         } catch (erro) {

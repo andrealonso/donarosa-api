@@ -33,12 +33,12 @@ model Cliente {
   dt_nasc         DateTime?
   tel             String?
   email           String?
-  endereco        String?
+  rua             String?
   bairro          String?
   cep             String?
   cidade          String?
   uf              String?
-  complemento     String?
+  num             String?
   ponto_ref       String?
   sexo            Sexo?         @relation(fields: [sexo_id], references: [id])
   sexo_id         Int?
@@ -61,12 +61,12 @@ model Funcionario {
   dt_nasc         DateTime?
   tel             String?
   email           String?
-  endereco        String?
+  rua             String?
+  num             String?
   bairro          String?
   cep             String?
   cidade          String?
   uf              String?
-  complemento     String?
   ponto_ref       String?
   sexo            Sexo?         @relation(fields: [sexo_id], references: [id])
   sexo_id         Int?
@@ -123,6 +123,7 @@ model Produto {
   contrato_itens      Contrato_itens[]
   estoque_lancamentos Estoque_lanc[]
   venda_itens         Venda_itens[]
+  prod_imgs           Prod_imgs[]
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -131,10 +132,21 @@ model Produto {
   @@map("produtos")
 }
 
+model Prod_imgs {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  extensao   String
+  lado       String
+  produto    Produto? @relation(fields: [produto_id], references: [id])
+  produto_id Int?
+
+  @@map("prod_imgs")
+}
+
 model Prod_tamanho {
   id        Int       @id @default(autoincrement())
   descricao String
-  produtos  Produto[]
+  Produto   Produto[]
 
   @@map("prod_tamanho")
 }
