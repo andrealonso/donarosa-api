@@ -31,10 +31,13 @@ class ProdutoService {
                         id: true,
                         cod_barras: true,
                         descricao: true,
-                        prod_cor: true,
                         qtd_estoque: true,
                         vl_aluguel: true,
-                        prod_tamanho: true
+                        prod_cor: true,
+                        prod_tamanho: true,
+                        prod_compri: true,
+                        prod_fabrica: true,
+                        prod_categoria: true
 
                     },
                     orderBy: { descricao: "asc" },

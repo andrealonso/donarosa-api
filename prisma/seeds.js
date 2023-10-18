@@ -10,11 +10,6 @@ const seeds = {
         { id: 2, descricao: "Balconista" },
     ],
 
-    pessoa_tipo: [
-        { id: 1, descricao: "Funcionário" },
-        { id: 2, descricao: "Cliente" },
-        { id: 3, descricao: "Fornecedor" },
-    ],
     ativo_status: [
         { id: 1, descricao: "ATIVO" },
         { id: 2, descricao: "INATIVO" }
@@ -87,7 +82,15 @@ const seeds = {
         { id: 1, descricao: "Vestidos" },
         { id: 2, descricao: "Ternos" },
         { id: 3, descricao: "Bolças" },
-    ]
+    ],
+    estoque_oper: [
+        { id: 1, descricao: "Entrada" },
+        { id: 2, descricao: "Saída" },
+    ],
+    estoque_tipo: [
+        { id: 1, descricao: "Manual" },
+        { id: 2, descricao: "Venda" },
+    ],
 }
 
 async function main() {

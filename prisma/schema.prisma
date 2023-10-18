@@ -29,7 +29,7 @@ model Cliente {
   id              Int           @id @default(autoincrement())
   nome            String        @unique
   identidade      String?
-  cpf             String        @unique
+  cpf             String?
   dt_nasc         DateTime?
   tel             String?
   email           String?

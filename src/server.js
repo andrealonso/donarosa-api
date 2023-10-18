@@ -10,6 +10,7 @@ const ProdutoRouters = require('./routers/ProdutoRouters')
 const ContratoRouters = require('./routers/ContratoRouters')
 const ContratoItensRouters = require('./routers/ContratoItensRouters')
 const FilesRouters = require('./routers/FilesRouters')
+const EstoqueRouters = require('./routers/EstoqueRouters')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -22,6 +23,7 @@ app.use('/', ProdutoRouters)
 app.use('/', ContratoRouters)
 app.use('/', ContratoItensRouters)
 app.use('/', FilesRouters)
+app.use('/', EstoqueRouters)
 
 app.listen(3000, () => {
     console.log('Servidor ativo na porta 3000');
