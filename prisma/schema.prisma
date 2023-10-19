@@ -8,11 +8,15 @@ datasource db {
 }
 
 model User {
-  id            Int         @id @default(autoincrement())
-  login         String      @unique
-  senha         String
-  user_nivel    User_Nivel? @relation(fields: [user_nivel_id], references: [id])
-  user_nivel_id Int?
+  id              Int           @id @default(autoincrement())
+  login           String        @unique
+  senha           String
+  user_nivel      User_Nivel?   @relation(fields: [user_nivel_id], references: [id])
+  user_nivel_id   Int?
+  funcionario     Funcionario?  @relation(fields: [funcionario_id], references: [id])
+  funcionario_id  Int?
+  ativo_status    Ativo_status? @relation(fields: [ativo_status_id], references: [id])
+  ativo_status_id Int?
 
   @@map("usuarios")
 }
@@ -72,6 +76,7 @@ model Funcionario {
   sexo_id         Int?
   ativo_status    Ativo_status? @relation(fields: [ativo_status_id], references: [id])
   ativo_status_id Int?
+  usuario         User[]
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -86,6 +91,7 @@ model Ativo_status {
   clientes    Cliente[]
   produtos    Produto[]
   funcionario Funcionario[]
+  usuarios    User[]
 
   @@map("status_ativo")
 }
