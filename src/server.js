@@ -12,6 +12,7 @@ const ContratoItensRouters = require('./routers/ContratoItensRouters')
 const FilesRouters = require('./routers/FilesRouters')
 const EstoqueRouters = require('./routers/EstoqueRouters')
 const FuncionarioRouters = require('./routers/FuncionarioRouters')
+const CaixaRouters = require('./routers/CaixaRouters')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -26,6 +27,7 @@ app.use('/', ContratoItensRouters)
 app.use('/', FilesRouters)
 app.use('/', EstoqueRouters)
 app.use('/', FuncionarioRouters)
+app.use('/', CaixaRouters)
 
 app.listen(3000, () => {
     console.log('Servidor ativo na porta 3000');

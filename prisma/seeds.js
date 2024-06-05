@@ -1,4 +1,5 @@
 const prisma = require("../src/services/prisma")
+var bcrypt = require('bcryptjs')
 
 var tabelasOk = []
 var tabelasErro = []
@@ -59,7 +60,6 @@ const seeds = {
     caixa_operacao: [
         { id: 1, descricao: "Entrada" },
         { id: 2, descricao: "Saída" },
-        { id: 3, descricao: "Entrada/Saída" }
     ],
     evento_tipo: [
         { id: 1, descricao: "Outros" },
@@ -106,9 +106,33 @@ async function main() {
             tabelasErro.push(tabela)
         }
     }
+    // Ativar usuário Root
+    async function ativarRoot() {
+        try {
+            const senha = await bcrypt.hash(process.env.ROOT_SENHA, 10)
+            await prisma.user.deleteMany()
+            await prisma.user.create({
+                data: {
+                    id: 1,
+                    nome: 'Root - SOQ',
+                    cpf: '00000000',
+                    tel: '00000000',
+                    login: process.env.ROOT_LOGIN,
+                    senha,
+                    user_tipo_id: 1,
+                    ativo_status_id: 1
+                }
+            })
+            console.log("Usuário root ativado.");
+        } catch (error) {
+            console.log("Usuário root erro:", error);
+        }
+    }
 
     // Aplicar todas as tabelas
-    Object.keys(seeds).forEach(async (iten) => await aplicarSeeds(`${iten}`))
+    const promises = Object.keys(seeds).map(async (iten) => await aplicarSeeds(`${iten}`))
+    await Promise.all(promises)
+    // await ativarRoot()
 
     // Aplicar apenas uma tabela
     // aplicarSeeds(`caixa_cate`)

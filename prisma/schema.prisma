@@ -17,6 +17,7 @@ model User {
   funcionario_id  Int?
   ativo_status    Ativo_status? @relation(fields: [ativo_status_id], references: [id])
   ativo_status_id Int?
+  caixa_lancs     Caixa_lanc[]
 
   @@map("usuarios")
 }
@@ -44,6 +45,7 @@ model Cliente {
   uf              String?
   num             String?
   ponto_ref       String?
+  obs             String?
   sexo            Sexo?         @relation(fields: [sexo_id], references: [id])
   sexo_id         Int?
   ativo_status    Ativo_status? @relation(fields: [ativo_status_id], references: [id])
@@ -107,11 +109,11 @@ model Sexo {
 
 model Produto {
   id                  Int              @id @default(autoincrement())
-  descricao           String           @unique
+  descricao           String
   cod_barras          String
-  vl_custo            Decimal?
-  vl_venda            Decimal?
-  vl_aluguel          Decimal?
+  vl_custo            Float?
+  vl_venda            Float?
+  vl_aluguel          Float?
   qtd_estoque         Int              @default(0)
   prod_imagem         String?
   ativo_status        Ativo_status?    @relation(fields: [ativo_status_id], references: [id])
@@ -226,7 +228,7 @@ model Estoque_oper {
 
 model Contrato {
   id                 Int              @id @default(autoincrement())
-  vl_total           Decimal
+  vl_total           Float
   dt_prova           DateTime
   dt_saida           DateTime
   dt_devol           DateTime
@@ -246,7 +248,7 @@ model Contrato {
 model Contrato_itens {
   id          Int       @id @default(autoincrement())
   qtd         Int
-  valor       Decimal
+  valor       Float
   produto     Produto?  @relation(fields: [produto_id], references: [id])
   produto_id  Int?
   contrato    Contrato? @relation(fields: [contrato_id], references: [id])
@@ -270,7 +272,7 @@ model Contrato_status {
 model Caixa_lanc {
   id        Int      @id @default(autoincrement())
   descricao String
-  valor     Decimal
+  valor     Float
   data      DateTime
 
   caixa_operacao    Caixa_operacao? @relation(fields: [caixa_operacao_id], references: [id])
@@ -281,8 +283,14 @@ model Caixa_lanc {
   caixa_cate_id     Int?
   contrato          Contrato?       @relation(fields: [contrato_id], references: [id])
   contrato_id       Int?
-  venda             Venda?          @relation(fields: [vendasId], references: [id])
-  vendasId          Int?
+  venda             Venda?          @relation(fields: [vendas_id], references: [id])
+  vendas_id         Int?
+  usuario           User?           @relation(fields: [user_id], references: [id])
+  user_id           Int?
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 
   @@map("caixa_lanc")
 }
@@ -316,10 +324,10 @@ model Caixa_operacao {
 
 model Venda {
   id            Int           @id @default(autoincrement())
-  vl_total      Decimal?
-  desconto_val  Decimal?
-  desconto_per  Decimal?
-  vl_descontado Decimal?
+  vl_total      Float?
+  desconto_val  Float?
+  desconto_per  Float?
+  vl_descontado Float?
   finalizada    Boolean       @default(false)
   venda_itens   Venda_itens[]
   caixa_lanc    Caixa_lanc[]
@@ -334,8 +342,8 @@ model Venda {
 model Venda_itens {
   id         Int      @id @default(autoincrement())
   qtd        Int
-  vl_uni     Decimal
-  vl_total   Decimal
+  vl_uni     Float
+  vl_total   Float
   venda      Venda?   @relation(fields: [vendas_id], references: [id])
   vendas_id  Int?
   produto    Produto? @relation(fields: [produto_id], references: [id])

@@ -1,6 +1,6 @@
 const { connect } = require('../services/db')
 var prisma = require('../services/prisma')
-var ClienteService = require("../repositories/ClienteService")
+var CaixaService = require("../repositories/CaixaService")
 var { PessoaValidation } = require("../validations/PessoaValidation")
 
 function verificarAcesso(user) {
@@ -15,14 +15,9 @@ function verificarAcesso(user) {
 
 }
 
-class ClienteController {
+class CaixaController {
     async criar(req, res) {
-        const user = req.user
-        // if (!verificarAcesso(user)) {
-        //     res.status(401).send({ erro: true, msg: 'Acesso não autorizado' })
-        //     return
-        // }
-        const dados = await ClienteService.create(req.body)
+        const dados = await CaixaService.create(req.body)
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -31,16 +26,22 @@ class ClienteController {
     }
 
     async listar(req, res) {
-        const user = req.user
-        if (!verificarAcesso(user)) {
-            res.status(401).send({ erro: true, msg: 'Acesso não autorizado' })
-            return
-        }
         const skip = Number(req?.query?.skip) || 0
         const take = Number(req?.query?.take) || 100
         const busca = req?.query?.busca || ""
 
-        const dados = await ClienteService.getAll(skip, take, busca)
+        const dados = await CaixaService.getAll(skip, take, busca)
+        if (!dados?.erro) {
+            res.status(200).send(dados)
+        } else {
+            res.status(400).send(dados)
+        }
+    }
+
+    async filtrar(req, res) {
+        const busca = req.bodu?.filtro || ""
+        const dados = await CaixaService.filtrar(filtro)
+
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -54,8 +55,7 @@ class ClienteController {
         //     res.status(401).send({ erro: true, msg: 'Acesso não autorizado' })
         //     return
         // }
-
-        const dados = await ClienteService.getById(Number(req?.params?.id))
+        const dados = await CaixaService.getById(Number(req?.params?.id))
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -71,7 +71,7 @@ class ClienteController {
         // }
         const id = Number(req?.params?.id)
         const payload = req.body
-        const dados = await ClienteService.update(id, payload)
+        const dados = await CaixaService.update(id, payload)
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -86,7 +86,7 @@ class ClienteController {
         //     return
         // }
         const id = Number(req?.params?.id)
-        const dados = await ClienteService.delete(id)
+        const dados = await CaixaService.delete(id)
         if (!dados?.erro) {
             res.status(200).send(dados)
         } else {
@@ -95,4 +95,4 @@ class ClienteController {
     }
 }
 
-module.exports = new ClienteController()
+module.exports = new CaixaController()
