@@ -37,7 +37,7 @@ class FilesController {
         //     return
         // }
         const filtro = req.query
-        filtro.produto_id = Number(filtro.produto_id)
+        // filtro.produto_id = Number(filtro.produto_id)
         const dados = await FilesService.getAll(filtro)
         if (!dados?.erro) {
             res.status(200).send(dados)

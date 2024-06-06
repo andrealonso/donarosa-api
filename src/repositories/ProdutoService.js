@@ -37,7 +37,8 @@ class ProdutoService {
                         prod_tamanho: true,
                         prod_compri: true,
                         prod_fabrica: true,
-                        prod_categoria: true
+                        prod_categoria: true,
+                        prod_imagem: true
 
                     },
                     orderBy: { descricao: "asc" },
