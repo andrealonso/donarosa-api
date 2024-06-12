@@ -232,6 +232,7 @@ model Contrato {
   dt_prova           DateTime
   dt_saida           DateTime
   dt_devol           DateTime
+  dt_evento          DateTime
   contrato_status    Contrato_status? @relation(fields: [contrato_status_id], references: [id])
   contrato_status_id Int?
   itens              Contrato_itens[]
@@ -355,7 +356,7 @@ model Venda_itens {
 model Evento {
   id             Int          @id @default(autoincrement())
   data           DateTime
-  descricao      String
+  descricao      String       @unique
   created_at     DateTime     @default(now())
   updated_at     DateTime     @updatedAt
   deleted_at     DateTime?

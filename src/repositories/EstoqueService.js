@@ -30,12 +30,11 @@ class EstoqueService {
                 descricao: {
                     contains: busca
                 }
-            }
+            },
         }
         try {
             const [qtdRegistros, registros] = await prisma.$transaction([
-
-                prisma.estoque_lanc.count({ ...filtro }),
+                prisma.estoque_lanc.count({ ...filtro, orderBy: { data: 'desc' } }),
                 prisma.$queryRaw`
                 select e.id,op.descricao as operacao,e.qtd,e.data,e.descricao, 
                 concat_ws(' ',p.cod_barras,p.descricao,cr.descricao,t.descricao,cp.descricao) as produto
