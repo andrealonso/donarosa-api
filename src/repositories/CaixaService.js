@@ -51,12 +51,13 @@ class CaixaService {
             return { erro: true, msg: 'Erro ao tentar exibir listagem no banco.' }
         }
     }
-    async filtrar(skip, take, busca) {
+    async realExtrato(filtro, skip, take) {
         await this.pausaTeste(0)
+        console.log('filtroCaixa'); return
         try {
             const [qtdRegistros, registros] = await prisma.$transaction([
                 prisma.caixa_lanc.count(),
-                prisma.caixa_lanc.findMany(),
+                prisma.caixa_lanc.findMany({ where: filtro }),
             ])
             const qtdPaginas = Math.ceil(qtdRegistros / take)
             const dados = { qtdRegistros, qtdPaginas, registros }

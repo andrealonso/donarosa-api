@@ -7,7 +7,7 @@ const CaixaController = require('../controllers/CaixaController')
 router.get('/caixas', CaixaController.listar)
 router.get('/caixa/:id', CaixaController.exibir)
 router.post('/caixa', CaixaController.criar)
-router.post('/caixa/filtrar', CaixaController.criar)
+router.post('/caixa/rel-extrato', CaixaController.realExtrato)
 router.put('/caixa/:id', CaixaController.editar)
 router.delete('/caixa/:id', CaixaController.deletar)
 

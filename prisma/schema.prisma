@@ -228,11 +228,13 @@ model Estoque_oper {
 
 model Contrato {
   id                 Int              @id @default(autoincrement())
-  vl_total           Float
-  dt_prova           DateTime
-  dt_saida           DateTime
-  dt_devol           DateTime
-  dt_evento          DateTime
+  vl_total           Float?
+  vl_sinal           Float?
+  vl_rest            Float?
+  dt_prova           DateTime?
+  dt_saida           DateTime?
+  dt_devol           DateTime?
+  dt_evento          DateTime?
   contrato_status    Contrato_status? @relation(fields: [contrato_status_id], references: [id])
   contrato_status_id Int?
   itens              Contrato_itens[]
@@ -242,6 +244,9 @@ model Contrato {
   caixa_lanc         Caixa_lanc[]
   cliente            Cliente?         @relation(fields: [cliente_id], references: [id])
   cliente_id         Int?
+  evento             Evento?          @relation(fields: [evento_id], references: [id])
+  evento_id          Int?
+  obs                String?
 
   @@map("contratos")
 }
@@ -249,7 +254,7 @@ model Contrato {
 model Contrato_itens {
   id          Int       @id @default(autoincrement())
   qtd         Int
-  valor       Float
+  valor       Float?
   produto     Produto?  @relation(fields: [produto_id], references: [id])
   produto_id  Int?
   contrato    Contrato? @relation(fields: [contrato_id], references: [id])
@@ -362,6 +367,7 @@ model Evento {
   deleted_at     DateTime?
   evento_tipo    Evento_tipo? @relation(fields: [evento_tipo_id], references: [id])
   evento_tipo_id Int?
+  contratos      Contrato[]
 
   @@map("eventos")
 }

@@ -7,6 +7,7 @@ const ContratoItensController = require('../controllers/ContratoItensController'
 router.get('/contrato-itens', ContratoItensController.listar)
 router.get('/contrato-item/:id', ContratoItensController.exibir)
 router.post('/contrato-item', ContratoItensController.criar)
+router.post('/contrato-item/exibir-agenda', ContratoItensController.exibirAgenda)
 router.put('/contrato-item/:id', ContratoItensController.editar)
 router.delete('/contrato-item/:id', ContratoItensController.deletar)
 

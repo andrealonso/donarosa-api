@@ -20,7 +20,7 @@ class EventoService {
 
             const dados = await prisma.evento.create({
                 data: payload,
-                select: { id: true }
+                select: { id: true, descricao: true, evento_tipo_id: true, evento_tipo: true }
             })
             return { erro: false, dados }
         } catch (erro) {
@@ -42,16 +42,11 @@ class EventoService {
         if (busca)
             where.data = new Date(busca)
         try {
-            const [qtdRegistros, registros] = await prisma.$transaction([
-                prisma.evento.count({ where }),
-                prisma.evento.findMany({
-                    where,
-                    orderBy: { data: "desc" },
-                    include: { evento_tipo: true }
-                }),
-            ])
-            const qtdPaginas = Math.ceil(qtdRegistros / take)
-            const dados = { qtdRegistros, qtdPaginas, registros }
+            const dados = await prisma.evento.findMany({
+                where,
+                orderBy: [{ descricao: "asc" }],
+                include: { evento_tipo: true }
+            })
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);

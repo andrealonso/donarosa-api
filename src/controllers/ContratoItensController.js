@@ -10,6 +10,14 @@ class ContratoItensController {
             res.status(400).send(dados)
         }
     }
+    async exibirAgenda(req, res) {
+        const dados = await ContratoItensService.exibirAgenda(req.body)
+        if (!dados?.erro) {
+            res.status(200).send(dados)
+        } else {
+            res.status(400).send(dados)
+        }
+    }
 
     async listar(req, res) {
         const dados = await ContratoItensService.getAll()

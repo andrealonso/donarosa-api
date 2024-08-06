@@ -12,8 +12,23 @@ class ContratoItensService {
 
     async create(payload) {
         try {
-            console.log(payload)
-            const dados = await prisma.contrato_itens.create({ data: payload })
+            const dados = await prisma.contrato_itens.create({
+                data: payload,
+                include: {
+                    produto: {
+                        select: {
+                            id: true,
+                            cod_barras: true,
+                            descricao: true,
+                            prod_cor: true,
+                            prod_imagem: true,
+                            prod_tamanho: true,
+                            prod_compri: true,
+                            prod_fabrica: true,
+                        }
+                    }
+                }
+            })
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);
@@ -23,7 +38,63 @@ class ContratoItensService {
 
     async getAll() {
         try {
-            const dados = await prisma.contrato_itens.findMany()
+            const dados = await prisma.contrato_itens.findMany({
+                include: {
+                    produto: {
+                        select: {
+                            id: true,
+                            cod_barras: true,
+                            descricao: true,
+                            prod_cor: true,
+                            prod_imagem: true,
+                            prod_tamanho: true,
+                            prod_compri: true,
+                            prod_fabrica: true,
+                        }
+                    }
+                }
+            })
+            return { erro: false, dados }
+        } catch (erro) {
+            console.log(erro);
+            return { erro: true, msg: 'Erro ao tentar criar o registro no banco.' }
+        }
+
+    }
+    async exibirAgenda(payload) {
+        const { dt_ini, dt_fim, campo } = payload
+        const contrato = {}
+        contrato[campo] = { gte: dt_ini, lte: dt_fim }
+        try {
+            const dados = await prisma.contrato_itens.findMany({
+                where: { AND: [{ contrato }, { deleted_at: null }] },
+                include: {
+                    contrato: {
+                        select: {
+                            cliente: {
+                                select: { nome: true, tel: true }
+                            },
+                            id: true,
+                            dt_evento: true,
+                            dt_prova: true,
+                            dt_saida: true,
+                            dt_devol: true,
+                        }
+                    },
+                    produto: {
+                        select: {
+                            id: true,
+                            cod_barras: true,
+                            descricao: true,
+                            prod_cor: true,
+                            prod_imagem: true,
+                            prod_tamanho: true,
+                            prod_compri: true,
+                            prod_fabrica: true,
+                        }
+                    }
+                },
+            })
             return { erro: false, dados }
         } catch (erro) {
             console.log(erro);

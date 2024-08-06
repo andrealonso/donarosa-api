@@ -38,9 +38,9 @@ class CaixaController {
         }
     }
 
-    async filtrar(req, res) {
-        const busca = req.bodu?.filtro || ""
-        const dados = await CaixaService.filtrar(filtro)
+    async realExtrato(req, res) {
+        const filtro = req.body?.filtro || ""
+        const dados = await CaixaService.realExtrato(filtro)
 
         if (!dados?.erro) {
             res.status(200).send(dados)
