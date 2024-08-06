@@ -1,5 +1,5 @@
 # docker image build -t api-soq . --no-cache
-FROM node:19-alpine as img-soq-api
+FROM node:19-alpine as img-donarosa-api
 
 WORKDIR /app
 
