@@ -26,8 +26,15 @@ class CaixaService {
     async getAll(skip, take, busca) {
         await this.pausaTeste(0)
         try {
+            const where = {
+                data: {
+                    gte: new Date(moment.utc().startOf('day')),
+                    lte: new Date(moment.utc().endOf('day'))
+                },
+                deleted_at: null
+            }
             const [qtdRegistros, registros] = await prisma.$transaction([
-                prisma.caixa_lanc.count(),
+                prisma.caixa_lanc.count({where}),
                 prisma.caixa_lanc.findMany({
                     include: {
                         caixa_cate: true,
@@ -35,12 +42,7 @@ class CaixaService {
                         caixa_operacao: true,
                         usuario: { select: { login: true } }
                     },
-                    where: {
-                        data: {
-                            gte: new Date(moment.utc().startOf('day')),
-                            lte: new Date(moment.utc().endOf('day'))
-                        }
-                    }
+                    where
                 }),
             ])
             const qtdPaginas = Math.ceil(qtdRegistros / take)

@@ -81,7 +81,7 @@ const seeds = {
     prod_categoria: [
         { id: 1, descricao: "Vestidos" },
         { id: 2, descricao: "Ternos" },
-        { id: 3, descricao: "Bolças" },
+        { id: 3, descricao: "Bolsas" },
     ],
     estoque_oper: [
         { id: 1, descricao: "Entrada" },

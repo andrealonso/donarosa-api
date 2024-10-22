@@ -51,7 +51,7 @@ class ContratoService {
     async create(payload) {
         if (payload?.contrato_status_id)
             payload.contrato_status_id = Number(payload.contrato_status_id)
-        console.log(payload);
+
         // const { itens } = payload
         // let cont_itens = null
         // delete payload.itens
@@ -87,7 +87,8 @@ class ContratoService {
                     cliente: { select: { nome: true, tel: true } },
                     contrato_status: true,
                     caixa_lanc: { select: { id: true, caixa_cate: true, data: true, valor: true } }
-                }
+                },
+                orderBy: { id: 'desc' }
             })
             return { erro: false, dados }
         } catch (erro) {
